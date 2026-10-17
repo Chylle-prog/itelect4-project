@@ -4,10 +4,7 @@ React and Vite frontend for the GT4 Lost & Found application.
 
 ## Live deployment
 
-- Frontend: https://itelect4-project-it-4-b-magbuhat.vercel.app/
-- Backend health: https://itelect4-project-it-4-b-magbuhat.vercel.app/api/health
-
-The frontend and API currently share one Vercel deployment and domain. API requests use the `/api` path.
+- Frontend: https://itelect4-project-it-4-b-magbuhat.vercel.app
 
 ## Run locally
 
