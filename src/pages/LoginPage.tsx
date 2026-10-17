@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import useAuthStore from '../store/authStore'
 import { loginWithEmailPassword } from '../api/auth'
 import { Button } from '@/components/ui/button'
@@ -81,6 +81,12 @@ function LoginPage() {
           {isSubmitting ? 'Logging in...' : 'Log In'}
         </Button>
       </form>
+      <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">
+        No account yet?{' '}
+        <Link to="/register" className="font-semibold text-blue-600 hover:underline dark:text-blue-400">
+          Register
+        </Link>
+      </p>
     </section>
   )
 }
