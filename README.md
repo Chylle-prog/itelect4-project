@@ -4,7 +4,7 @@ React 19, Vite, TypeScript, TailwindCSS v4, shadcn/ui, Zustand, and TanStack Que
 
 ## Live deployment
 
-- Frontend: https://itelect4-project-it-4-b-magbuhat.vercel.app
+- Frontend: https://itelect4-project-psi.vercel.app
 
 ## Run locally
 
