@@ -15,4 +15,4 @@ React and Vite frontend for the GT4 Lost & Found application.
 
 Run `npm run build` to type-check and create the production frontend build.
 
-The app uses email/password login and reads users, items, and claims from the backend API. Do not commit `.env`. 
+The app uses email/password login and reads users, items, and claims from the backend API. Its protected AI Review page sends item-report text to the backend; the Gemini key is never sent to this frontend. Do not commit `.env`.
