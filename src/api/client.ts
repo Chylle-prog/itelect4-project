@@ -24,6 +24,11 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   if (token) headers.set('Authorization', `Bearer ${token}`)
 
   const response = await fetch(`${API_URL}${path}`, { ...init, headers })
+
+  if (response.status === 401) {
+    useAuthStore.getState().logout()
+  }
+
   const result = (await response.json().catch(() => null)) as
     | (T & { message?: string })
     | null
