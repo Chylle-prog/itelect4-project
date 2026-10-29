@@ -2,6 +2,7 @@ import type {
   ApiClaim,
   ApiLostFoundItem,
   ApiUser,
+  AiReview,
   Claim,
   LostFoundItem,
   NewClaim,
@@ -13,17 +14,32 @@ export const API_URL = (
   import.meta.env.VITE_API_URL ?? ''
 ).replace(/\/$/, '')
 
-function getAuthHeaders(): HeadersInit {
+async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
+  const headers = new Headers(init.headers)
+  if (init.body !== undefined && !headers.has('Content-Type')) {
+    headers.set('Content-Type', 'application/json')
+  }
+
   const token = useAuthStore.getState().token
-  return token ? { Authorization: `Bearer ${token}` } : {}
+  if (token) headers.set('Authorization', `Bearer ${token}`)
+
+  const response = await fetch(`${API_URL}${path}`, { ...init, headers })
+
+  if (response.status === 401) {
+    useAuthStore.getState().logout()
+  }
+
+  const result = (await response.json().catch(() => null)) as
+    | (T & { message?: string })
+    | null
+  if (!response.ok) {
+    throw new Error(result?.message ?? `Request failed: ${response.status}`)
+  }
+  return result as T
 }
 
 async function getJson<T>(path: string): Promise<T> {
-  const response = await fetch(`${API_URL}${path}`, { headers: getAuthHeaders() })
-  if (!response.ok) {
-    throw new Error(`Request failed: ${response.status}`)
-  }
-  return response.json() as Promise<T>
+  return request<T>(path)
 }
 
 function toUser(user: ApiUser): User {
@@ -65,32 +81,27 @@ export async function fetchClaims(): Promise<Claim[]> {
 }
 
 export async function createClaim(claim: NewClaim): Promise<Claim> {
-  const saved = await fetch(`${API_URL}/api/claims`, {
+  const saved = await request<ApiClaim>('/api/claims', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
     body: JSON.stringify(claim),
   })
-  if (!saved.ok) {
-    const result = (await saved.json().catch(() => null)) as { message?: string } | null
-    throw new Error(result?.message ?? 'Could not create claim')
-  }
-  const data = (await saved.json()) as ApiClaim
-  return toClaim(data)
+  return toClaim(saved)
 }
 
 export async function updateClaimStatus(
   id: string,
   status: Extract<Claim['status'], 'approved' | 'rejected'>,
 ): Promise<Claim> {
-  const response = await fetch(`${API_URL}/api/claims/${id}`, {
+  const response = await request<ApiClaim>(`/api/claims/${id}`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
     body: JSON.stringify({ status }),
   })
-  if (!response.ok) {
-    const result = (await response.json().catch(() => null)) as { message?: string } | null
-    throw new Error(result?.message ?? 'Could not update claim')
-  }
+  return toClaim(response)
+}
 
-  return toClaim((await response.json()) as ApiClaim)
+export async function askAi(prompt: string): Promise<AiReview> {
+  return request<AiReview>('/api/ai', {
+    method: 'POST',
+    body: JSON.stringify({ prompt }),
+  })
 }

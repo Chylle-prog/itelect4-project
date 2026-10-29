@@ -31,6 +31,13 @@ verifiedByUserId?: string;
 createdAt: Date;
 }
 
+export interface AiReview {
+  summary: string
+  strengths: string[]
+  improvements: string[]
+  readiness: 'ready' | 'almost' | 'not-yet'
+}
+
 // ===== GENERIC INTERFACE =====
 export interface ApiResponse<T> {
 success: boolean;
