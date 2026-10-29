@@ -1,6 +1,24 @@
-﻿# ITElect4 Lost & Found Frontend
+# ITElect4 Lost & Found Frontend
 
-React 19, Vite, TypeScript, TailwindCSS v4, shadcn/ui, Zustand, and TanStack Query frontend for the GT5 Lost & Found application.
+[![CI](https://github.com/Chylle-prog/itelect4-project/actions/workflows/ci.yml/badge.svg)](https://github.com/Chylle-prog/itelect4-project/actions/workflows/ci.yml)
+
+React 19, Vite, TypeScript, TailwindCSS v4, shadcn/ui, Zustand, and TanStack Query frontend for the GT6 Lost & Found application.
+
+- **Live Frontend:** https://itelect4-project-psi.vercel.app
+- **Backend repo:** https://github.com/Chylle-prog/itelect4-backend
+
+## Architecture
+
+```mermaid
+flowchart LR
+  fe["itelect4-project<br/>React + Vite on Vercel"]
+  be["itelect4-backend<br/>Express on Vercel"]
+  db[("MongoDB Atlas")]
+  ai["Gemini API"]
+  fe -- "fetch + Bearer token" --> be
+  be -- "Mongoose" --> db
+  be -- "GEMINI_API_KEY" --> ai
+```
 
 ## Live deployment
 
