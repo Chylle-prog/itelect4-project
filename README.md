@@ -68,3 +68,7 @@ The Gemini API key is never sent to this frontend. The browser only calls `/api/
 | `VITE_API_URL` | Backend origin. Leave empty in development to use the Vite proxy. Set the deployed backend URL for the Vercel project. |
 
 Do not commit `.env`.
+
+## AI-Use Disclosure
+
+AI assistants were utilized during development for code syntax verification, lockfile debugging, and structuring test suites. All application features, schema design, and integrations were reviewed and tested by the author in adherence to course guidelines.
